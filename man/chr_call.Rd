@@ -4,12 +4,14 @@
 \alias{chr_call}
 \title{chr_call}
 \usage{
-chr_call(instance, query)
+chr_call(instance, query, max_attempts = 1000)
 }
 \arguments{
 \item{instance}{a chromium session returned by chr_init}
 
 \item{query}{a message to be sent to the chromium session}
+
+\item{max_attempts}{number of attempts before aborting call}
 }
 \value{
 The chromium debugger response to the query.

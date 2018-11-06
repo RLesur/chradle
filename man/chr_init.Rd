@@ -6,7 +6,8 @@
 \usage{
 chr_init(url = "http://localhost:8080", debug_port = 9222,
   bin = "chromium-browser",
-  block_on_message_pattern = "Runtime.executionContextCreated")
+  block_on_message_pattern = "Page.frameStoppedLoading",
+  incomming_debug = FALSE)
 }
 \arguments{
 \item{url}{url of the session to be inspected}
