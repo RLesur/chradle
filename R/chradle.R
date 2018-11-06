@@ -79,12 +79,12 @@ chr_key <- function(instance){
                               unmodifiedText = "w")) %>%
       ws_con$send()
   })
-  
+
   ws_con$onMessage(function(event){
     message("got!", event$data)
     result_env$result_value <- TRUE
   })
-  
+
   ws_con$connect()
 
   block_on_NULL("result_value", max_attempts = 1000, envir = result_env)
@@ -98,10 +98,11 @@ chr_key <- function(instance){
 ##' @title chr_call
 ##' @param instance a chromium session returned by chr_init
 ##' @param query a message to be sent to the chromium session
+##' @param max_attempts number of attempts before aborting call
 ##' @return The chromium debugger response to the query.
 ##' @author Miles McBain
 ##' @export
-chr_call <- function(instance, query){
+chr_call <- function(instance, query, max_attempts = 1000){
 
   result_env <- new.env()
   result_env$result_value <- NULL
@@ -125,7 +126,7 @@ chr_call <- function(instance, query){
 
   ws_con$connect()
 
-  block_on_NULL("result_value", max_attempts = 1000, envir = result_env)
+  block_on_NULL("result_value", max_attempts = max_attempts, envir = result_env)
   ws_con$close()
 
   result_env$result_value
@@ -202,7 +203,7 @@ chr_message <- function(id, method, params = NULL){
 debugger_200_ok <- function(port, retry_delay=0.2, max_attempts=15, attempt=1){
 
   if (max_attempts <= attempt){
-    stop(glue::glue("Reached max attempts ({max_attempts}) without HTTP 200 response from debugger on http://localhost:{port}")) 
+    stop(glue::glue("Reached max attempts ({max_attempts}) without HTTP 200 response from debugger on http://localhost:{port}"))
   }
 
   url <- glue::glue("http://localhost:{port}")
